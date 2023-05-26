@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "339332231328",
+    "project_id": "ayosehat-6befd",
+    "storage_bucket": "ayosehat-6befd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339332231328:android:21a43f3f8f4dce159719c5",
+        "android_client_info": {
+          "package_name": "com.example.ayosehat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "339332231328-ksfvf7tokqsrlu2nf2avvffi007e4r7o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhj4iVVo1FDHoug3ceVzYcC6N7V5gV7AQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "339332231328-ksfvf7tokqsrlu2nf2avvffi007e4r7o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
