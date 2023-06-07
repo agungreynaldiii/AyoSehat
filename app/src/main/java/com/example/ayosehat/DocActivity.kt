@@ -26,7 +26,7 @@ class DocActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_doc)
 
         mAuth = FirebaseAuth.getInstance()
         mDbRef = FirebaseDatabase.getInstance().reference
@@ -40,79 +40,40 @@ class DocActivity : AppCompatActivity() {
         userRecyclerView.layoutManager = LinearLayoutManager(this)
         userRecyclerView.adapter = adapter
 
-        val addedUserIds = HashSet<String>() // HashSet to track added user UIDs
+        mDbRef.child("user").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                userList.clear()
+                userListFinal.clear()
 
-        mDbRef.child("user").addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val currentUser = snapshot.getValue(User::class.java)
-                if (mAuth.currentUser?.uid != currentUser?.uid) {
-                    userList.add(currentUser!!)
-                    adapter.notifyDataSetChanged()
+                for (postSnapshot in snapshot.children) {
+                    val currentUser = postSnapshot.getValue(User::class.java)
+                    if (mAuth.currentUser?.uid != currentUser?.uid) {
+                        userList.add(currentUser!!)
+                    }
                 }
-            }
 
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                val updatedUser = snapshot.getValue(User::class.java)
-                val index = userList.indexOfFirst { it.uid == updatedUser?.uid }
-                if (index != -1) {
-                    userList[index] = updatedUser!!
-                    adapter.notifyDataSetChanged()
-                }
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-                val removedUser = snapshot.getValue(User::class.java)
-                userList.removeIf { it.uid == removedUser?.uid }
-                adapter.notifyDataSetChanged()
-            }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                // Handle moved user entries if needed
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Handle error
-            }
-        })
-
-        mDbRef.child("chats").addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val chatKey = snapshot.key
-                val userUid = chatKey?.replace(mAuth.currentUser?.uid!!, "")
-                if (userUid != null && !addedUserIds.contains(userUid)) {
-                    mDbRef.child("user").child(userUid).addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(userSnapshot: DataSnapshot) {
-                            val user = userSnapshot.getValue(User::class.java)
-                            if (user != null) {
+                mDbRef.child("chats").addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(chatsSnapshot: DataSnapshot) {
+                        for (user in userList) {
+                            val chatKey = user.uid + mAuth.currentUser?.uid
+                            if (chatsSnapshot.hasChild(chatKey) && !userListFinal.contains(user)) {
                                 userListFinal.add(user)
-                                addedUserIds.add(userUid)
-                                adapter.notifyDataSetChanged()
                             }
                         }
+                        adapter.notifyDataSetChanged()
+                    }
 
-                        override fun onCancelled(error: DatabaseError) {
-                            // Handle error
-                        }
-                    })
-                }
-            }
-
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                // Handle changes to existing chat entries if needed
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-                // Handle removal of chat entries if needed
-            }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                // Handle moved chat entries if needed
+                    override fun onCancelled(error: DatabaseError) {
+                        // Handle error
+                    }
+                })
             }
 
             override fun onCancelled(error: DatabaseError) {
                 // Handle error
             }
         })
+
     }
 
 
