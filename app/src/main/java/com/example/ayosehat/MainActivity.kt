@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var userRecyclerView: RecyclerView
     private lateinit var userList: ArrayList<User>
+    private lateinit var userListFinal: ArrayList<User>
     private lateinit var adapter: UserAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
@@ -27,10 +28,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mAuth = FirebaseAuth.getInstance()
-        mDbRef = FirebaseDatabase.getInstance().getReference()
+        mDbRef = FirebaseDatabase.getInstance().reference
 
         userList = ArrayList()
-        adapter = UserAdapter(this,userList)
+        userListFinal = ArrayList()
+        adapter = UserAdapter(this,userListFinal)
 
         userRecyclerView = findViewById(R.id.userRecycleView)
 
@@ -46,14 +48,23 @@ class MainActivity : AppCompatActivity() {
                         userList.add(currentUser!!)
                     }
                 }
+
+                for (a in 0 until userList.size) {
+                    if (userList[a].role!!.lowercase() == "dokter") {
+                        userListFinal.add(userList[a])
+                    }
+                }
                 adapter.notifyDataSetChanged()
             }
+
 
             override fun onCancelled(error: DatabaseError) {
 
             }
 
         })
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -62,13 +73,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.logout){
-            mAuth.signOut()
-            val intent = Intent(this, login::class.java)
-            finish()
-            startActivity(intent)
-            return true
+        when (item.itemId) {
+            R.id.logout -> {
+                mAuth.signOut()
+                val intent = Intent(this, Login::class.java)
+                finish()
+                startActivity(intent)
+                return true
+            }
+            R.id.Reload -> {
+                finish()
+                startActivity(intent)
+                return true
+            }
         }
-        return true
+        return super.onOptionsItemSelected(item)
     }
 }

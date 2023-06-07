@@ -33,7 +33,6 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>):
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentMessage = messageList[position]
         if(holder.javaClass == SentViewHolder::class.java){
-
             val viewHolder = holder as SentViewHolder
             holder.sentMessage.text = currentMessage.message
 

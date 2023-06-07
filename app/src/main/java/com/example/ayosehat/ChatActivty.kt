@@ -54,7 +54,6 @@ class ChatActivty : AppCompatActivity() {
         mDbRef.child("chats").child(senderRoom!!).child("messages")
             .addValueEventListener(object: ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-
                     messageList.clear()
                     for(postSnapshot in snapshot.children){
                         val message = postSnapshot.getValue(Message::class.java)
