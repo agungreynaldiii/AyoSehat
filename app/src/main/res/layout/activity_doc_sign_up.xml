@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/parentLayout"
-    tools:context=".SignUp">
+    tools:context=".DocSignUp">
 
     <ImageView
         android:id="@+id/app_logo"
@@ -58,35 +58,27 @@
         android:paddingLeft="20dp"
         />
 
-<!--    <Spinner-->
-<!--        android:id="@+id/spinnerRole"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:spinnerMode="dialog"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:layout_marginRight="20dp"-->
-<!--        android:paddingLeft="10dp"-->
-<!--        android:background="@drawable/edt_background"-->
-<!--        android:layout_below="@id/edt_password"/>-->
+    <EditText
+        android:id="@+id/idDoc"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="ID"
+        android:inputType="number"
+        android:layout_below="@id/edt_password"
+        android:background="@drawable/edt_background"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingLeft="20dp"
+        />
 
-<!--    <EditText-->
-<!--        android:visibility="gone"-->
-<!--        android:id="@+id/edt_role"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:hint="Role"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:layout_marginRight="20dp"-->
-<!--        android:paddingLeft="10dp"-->
-<!--        />-->
+
 
     <Button
         android:id="@+id/btnSignUp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edt_password"
+        android:layout_below="@id/idDoc"
         android:text="Sign Up"
         android:textSize="20sp"
         android:background="@drawable/btn_background"

@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var userRecyclerView: RecyclerView
     private lateinit var userList: ArrayList<User>
     private lateinit var userListFinal: ArrayList<User>
-    private lateinit var adapter: UserAdapter
+    private lateinit var adapter: DokterAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
 
@@ -32,14 +32,14 @@ class MainActivity : AppCompatActivity() {
 
         userList = ArrayList()
         userListFinal = ArrayList()
-        adapter = UserAdapter(this,userListFinal)
+        adapter = DokterAdapter(this,userListFinal)
 
         userRecyclerView = findViewById(R.id.userRecycleView)
 
         userRecyclerView.layoutManager = LinearLayoutManager(this)
         userRecyclerView.adapter = adapter
 
-        mDbRef.child("user").addValueEventListener(object: ValueEventListener{
+        mDbRef.child("dokter").addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear()
                 for(postSnapshot in snapshot.children){
@@ -48,13 +48,15 @@ class MainActivity : AppCompatActivity() {
                         userList.add(currentUser!!)
                     }
                 }
-
-                for (a in 0 until userList.size) {
-                    if (userList[a].role!!.lowercase() == "dokter") {
-                        userListFinal.add(userList[a])
-                    }
-                }
+                userListFinal.clear()
+                userListFinal.addAll(userList)
                 adapter.notifyDataSetChanged()
+
+//                for (a in 0 until userList.size) {
+//                    if (userList[a].role!!.lowercase() == "dokter") {
+//                        userListFinal.add(userList[a])
+//                    }
+//                }
             }
 
 

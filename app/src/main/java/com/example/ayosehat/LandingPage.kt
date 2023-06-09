@@ -18,7 +18,7 @@ class LandingPage : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
         binding.btnDoc.setOnClickListener {
-            val intent = Intent(this, Login::class.java)
+            val intent = Intent(this, DocLogin::class.java)
             startActivity(intent)
         }
         binding.btnUser.setOnClickListener {

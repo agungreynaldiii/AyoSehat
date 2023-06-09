@@ -35,7 +35,7 @@ class ChatActivty : AppCompatActivity() {
         val name = intent.getStringExtra("name")
         val receiverUid = intent.getStringExtra("uid")
         val senderUid = FirebaseAuth.getInstance().currentUser?.uid
-        mDbRef = FirebaseDatabase.getInstance().getReference()
+        mDbRef = FirebaseDatabase.getInstance().reference
 
         senderRoom = receiverUid + senderUid
         receiverRoom = senderUid + receiverUid

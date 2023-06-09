@@ -24,39 +24,77 @@ class DocActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
 
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContentView(R.layout.activity_doc)
+//
+//        mAuth = FirebaseAuth.getInstance()
+//        mDbRef = FirebaseDatabase.getInstance().reference
+//
+//        userList = ArrayList()
+//        userListFinal = ArrayList()
+//        adapter = UserAdapter(this, userListFinal)
+//
+//        userRecyclerView = findViewById(R.id.userRecycleView)
+//
+//        userRecyclerView.layoutManager = LinearLayoutManager(this)
+//        userRecyclerView.adapter = adapter
+//        mDbRef.child("user").addValueEventListener(object: ValueEventListener{
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                userList.clear()
+//                for(postSnapshot in snapshot.children){
+//                    val currentUser = postSnapshot.getValue(User::class.java)
+//                    if(mAuth.currentUser?.uid != currentUser?.uid){
+//                        userList.add(currentUser!!)
+//                    }
+//                }
+//                userListFinal.clear()
+//                userListFinal.addAll(userList)
+//                adapter.notifyDataSetChanged()
+//
+//            }
+//
+//
+//            override fun onCancelled(error: DatabaseError) {
+//
+//            }
+//
+//        })
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_doc)
+        setContentView(R.layout.activity_main)
 
         mAuth = FirebaseAuth.getInstance()
         mDbRef = FirebaseDatabase.getInstance().reference
 
         userList = ArrayList()
         userListFinal = ArrayList()
-        adapter = UserAdapter(this, userListFinal)
+        adapter = UserAdapter(this,userListFinal)
 
         userRecyclerView = findViewById(R.id.userRecycleView)
 
         userRecyclerView.layoutManager = LinearLayoutManager(this)
         userRecyclerView.adapter = adapter
 
-        mDbRef.child("user").addValueEventListener(object : ValueEventListener {
+        mDbRef.child("user").addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear()
                 userListFinal.clear()
 
-                for (postSnapshot in snapshot.children) {
+                for(postSnapshot in snapshot.children){
                     val currentUser = postSnapshot.getValue(User::class.java)
-                    if (mAuth.currentUser?.uid != currentUser?.uid) {
+                    if(mAuth.currentUser?.uid != currentUser?.uid){
                         userList.add(currentUser!!)
                     }
                 }
 
-                mDbRef.child("chats").addListenerForSingleValueEvent(object : ValueEventListener {
+                mDbRef.child("chats").addListenerForSingleValueEvent(object: ValueEventListener {
                     override fun onDataChange(chatsSnapshot: DataSnapshot) {
+                        userListFinal.clear()
                         for (user in userList) {
                             val chatKey = user.uid + mAuth.currentUser?.uid
-                            if (chatsSnapshot.hasChild(chatKey) && !userListFinal.contains(user)) {
+                            if (chatsSnapshot.hasChild(chatKey)) {
                                 userListFinal.add(user)
                             }
                         }
@@ -67,6 +105,7 @@ class DocActivity : AppCompatActivity() {
                         // Handle error
                     }
                 })
+
             }
 
             override fun onCancelled(error: DatabaseError) {

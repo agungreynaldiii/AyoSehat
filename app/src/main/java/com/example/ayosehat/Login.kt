@@ -53,67 +53,60 @@ class Login : AppCompatActivity() {
 
     private fun login(email: String, password: String) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    val currentUserUid = mAuth.currentUser?.uid
-                    if (currentUserUid != null) {
-                        mDbRef.child("user").child(currentUserUid)
-                            .addListenerForSingleValueEvent(object :
-                                ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    val role = snapshot.child("role").getValue(String::class.java)
-                                    if (role!!.lowercase() == "dokter") {
-                                        val intent = Intent(this@Login, DocActivity::class.java)
-                                        startActivity(intent)
-                                    } else {
-                                        val intent = Intent(this@Login, MainActivity::class.java)
-                                        startActivity(intent)
-                                    }
-                                }
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { loginTask ->
+                if (loginTask.isSuccessful) {
+                    val currentUser = mAuth.currentUser
+                    val userRef = mDbRef.child("user").child(currentUser!!.uid)
 
-                                override fun onCancelled(error: DatabaseError) {
+                    userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            if (snapshot.exists()) {
+                                // User exists in the "user" node
+                                val intent = Intent(this@Login, MainActivity::class.java)
+                                startActivity(intent)
+                            } else {
+                                // User does not exist in the "user" node
+                                Toast.makeText(this@Login, "Data User Tidak Ditemukan", Toast.LENGTH_SHORT).show()
+                            }
+                        }
 
-                                }
-                            })
-                    }
-                }else{
-                    Toast.makeText(this, "Gagal Login !!", Toast.LENGTH_SHORT).show()
+                        override fun onCancelled(error: DatabaseError) {
+                            // Handle error
+                            Toast.makeText(this@Login, "Failed to login. Please try again.", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                } else {
+                    Toast.makeText(this, "Gagal login, Coba lagi", Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
-            Toast.makeText(this, "Tidak Boleh Kosong !!", Toast.LENGTH_SHORT).show()
-
+            Toast.makeText(this, "Tidak Boleh Kosong", Toast.LENGTH_SHORT).show()
         }
     }
 
-
-    override fun onStart() {
-        super.onStart()
-        if (mAuth.currentUser != null) {
-            val currentUserUid = mAuth.currentUser?.uid
-            mDbRef.child("user").child(currentUserUid!!)
-                .addListenerForSingleValueEvent(object :
-                    ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val role = snapshot.child("role").getValue(String::class.java)
-                        if (role!!.lowercase() == "dokter") {
-                            val intent = Intent(this@Login, DocActivity::class.java)
-                            startActivity(intent)
-                        } else {
-                            val intent = Intent(this@Login, MainActivity::class.java)
-                            startActivity(intent)
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-
-                    }
-                })
-        }
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        if (mAuth.currentUser != null) {
+//            val currentUserUid = mAuth.currentUser?.uid
+//            mDbRef.child("user").child(currentUserUid!!)
+//                .addListenerForSingleValueEvent(object :
+//                    ValueEventListener {
+//                    override fun onDataChange(snapshot: DataSnapshot) {
+//                        val role = snapshot.child("role").getValue(String::class.java)
+//                        if (role!!.lowercase() == "dokter") {
+//                            val intent = Intent(this@Login, DocActivity::class.java)
+//                            startActivity(intent)
+//                        } else {
+//                            val intent = Intent(this@Login, MainActivity::class.java)
+//                            startActivity(intent)
+//                        }
+//                    }
+//
+//                    override fun onCancelled(error: DatabaseError) {
+//
+//                    }
+//                })
+//        }
+//    }
 }
 
-
-//            val intent = Intent(this, MainActivity::class.java)
-//            finish()
-//            startActivity(intent)

@@ -20,8 +20,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-
-class SignUp : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+//, AdapterView.OnItemSelectedListener
+class SignUp : AppCompatActivity(){
 
     private lateinit var edtEmail: EditText
     private lateinit var edtPassword: EditText
@@ -33,10 +33,10 @@ class SignUp : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private lateinit var linearLayouts : LinearLayout
     private lateinit var spinner : Spinner
 
-    private var txtRoles ="Dokter"
-
-    var roles = arrayOf("Dokter", "User")
-    val NEW_SPINNER_ID = 1
+//    private var txtRoles ="Dokter"
+//
+//    var roles = arrayOf("Dokter", "User")
+//    val NEW_SPINNER_ID = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,22 +49,22 @@ class SignUp : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         edtPassword = findViewById(R.id.edt_password)
         edtName = findViewById(R.id.edt_name)
         btnSignUp = findViewById(R.id.btnSignUp)
-        edtRole = findViewById(R.id.edt_role)
+//        edtRole = findViewById(R.id.edt_role)
 
-        linearLayouts = findViewById(R.id.parentLayout)
-        spinner = findViewById(R.id.spinnerRole)
-        var aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, roles)
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        with(spinner)
-        {
-            adapter = aa
-            setSelection(0, false)
-            onItemSelectedListener = this@SignUp
-            prompt = "Select your favourite language"
-            gravity = Gravity.CENTER
-
-        }
+//        linearLayouts = findViewById(R.id.parentLayout)
+//        spinner = findViewById(R.id.spinnerRole)
+//        var aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, roles)
+//        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//
+//        with(spinner)
+//        {
+//            adapter = aa
+//            setSelection(0, false)
+//            onItemSelectedListener = this@SignUp
+//            prompt = "Select your favourite language"
+//            gravity = Gravity.CENTER
+//
+//        }
 
 //        val spinner = Spinner(this)
 //        spinner.id = NEW_SPINNER_ID
@@ -74,34 +74,33 @@ class SignUp : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 //        ll.setMargins(10, 40, 10, 10)
 //        linearLayouts.addView(spinner)
 
-        aa = ArrayAdapter(this, R.layout.item_spinner_role, roles)
-        aa.setDropDownViewResource(R.layout.item_spinner_role)
-
-        with(spinner)
-        {
-            adapter = aa
-            setSelection(0, false)
-            onItemSelectedListener = this@SignUp
-            prompt = "Select your Role"
-            setPopupBackgroundResource(androidx.appcompat.R.color.material_grey_600)
-
-        }
+//        aa = ArrayAdapter(this, R.layout.item_spinner_role, roles)
+//        aa.setDropDownViewResource(R.layout.item_spinner_role)
+//
+//        with(spinner)
+//        {
+//            adapter = aa
+//            setSelection(0, false)
+//            onItemSelectedListener = this@SignUp
+//            prompt = "Select your Role"
+//            setPopupBackgroundResource(androidx.appcompat.R.color.material_grey_600)
+//
+//        }
 
         btnSignUp.setOnClickListener {
             val email = edtEmail.text.toString()
             val password = edtPassword.text.toString()
             val name = edtName.text.toString()
-            val role = txtRoles
 
-            signUp(name, email, password, role)
+            signUp(name, email, password)
         }
     }
 
-    private fun signUp(name: String,email: String, password: String, role: String){
-        if (email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()  && role.isNotEmpty()) {
+    private fun signUp(name: String,email: String, password: String){
+        if (email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()) {
            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
-                    addUserToDatabase(name, email, mAuth.currentUser?.uid!!, role)
+                    addUserToDatabase(name, email, mAuth.currentUser?.uid!!)
                     val intent = Intent(this, Login::class.java)
                     finish()
                     startActivity(intent)
@@ -116,27 +115,27 @@ class SignUp : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     }
 
-    private fun addUserToDatabase(name: String, email: String, uid: String, role: String){
+    private fun addUserToDatabase(name: String, email: String, uid: String){
         mDbRef = FirebaseDatabase.getInstance().reference
-        mDbRef.child("user").child(uid).setValue(User(name, email, uid, role))
+        mDbRef.child("user").child(uid).setValue(User(name, email, uid))
     }
 
-    override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-        when (view?.id) {
-            1 -> txtRoles = roles[position]
-            else -> {
-                txtRoles = roles[position]
-            }
-        }
-
-    }
-
-    override fun onNothingSelected(position: AdapterView<*>?) {
-        Toast.makeText(this, "Nothing Selected", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun showToast(context: Context = applicationContext, message: String, duration: Int = Toast.LENGTH_LONG) {
-        Toast.makeText(context, message, duration).show()
-    }
+//    override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, p3: Long) {
+//        when (view?.id) {
+//            1 -> txtRoles = roles[position]
+//            else -> {
+//                txtRoles = roles[position]
+//            }
+//        }
+//
+//    }
+//
+//    override fun onNothingSelected(position: AdapterView<*>?) {
+//        Toast.makeText(this, "Nothing Selected", Toast.LENGTH_SHORT).show()
+//    }
+//
+//    private fun showToast(context: Context = applicationContext, message: String, duration: Int = Toast.LENGTH_LONG) {
+//        Toast.makeText(context, message, duration).show()
+//    }
 
 }

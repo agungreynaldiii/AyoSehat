@@ -13,13 +13,16 @@
         android:theme="@style/Theme.AyoSehat"
         tools:targetApi="31">
         <activity
+            android:name=".DocSignUp"
+            android:exported="true" />
+        <activity
             android:name=".DocActivity"
             android:exported="true" />
         <activity
-            android:name=".LandingPage"
+            android:name=".Login"
             android:exported="true" />
         <activity
-            android:name=".docLogin"
+            android:name=".DocLogin"
             android:exported="true" />
         <activity
             android:name=".ChatActivty"
@@ -28,7 +31,7 @@
             android:name=".SignUp"
             android:exported="true" />
         <activity
-            android:name=".Login"
+            android:name=".LandingPage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
