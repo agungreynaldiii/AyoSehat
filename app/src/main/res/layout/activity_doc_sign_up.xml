@@ -13,8 +13,8 @@
         android:layout_width="281dp"
         android:layout_height="186dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
         android:layout_marginLeft="65dp"
+        android:layout_marginTop="7dp"
         android:layout_marginRight="65dp"
         android:src="@drawable/logo" />
 
@@ -72,6 +72,47 @@
         android:paddingLeft="20dp"
         />
 
+    <EditText
+        android:id="@+id/spDoc"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Spesialis"
+        android:inputType="text"
+        android:layout_below="@id/idDoc"
+        android:background="@drawable/edt_background"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingLeft="20dp"
+        />
+
+    <EditText
+        android:id="@+id/exDoc"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Pengalaman"
+        android:inputType="text"
+        android:layout_below="@id/spDoc"
+        android:background="@drawable/edt_background"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingLeft="20dp"
+        />
+
+    <EditText
+        android:id="@+id/gradDoc"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Lulusan"
+        android:inputType="text"
+        android:layout_below="@id/exDoc"
+        android:background="@drawable/edt_background"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingLeft="20dp"
+        />
 
 
     <Button

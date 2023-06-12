@@ -67,6 +67,7 @@ class DocLogin : AppCompatActivity() {
                                     if (dokterId == id) {
                                         // ID sesuai, dokter berhasil masuk
                                         val intent = Intent(this@DocLogin, DocActivity::class.java)
+                                        finish()
                                         startActivity(intent)
                                     } else {
                                         // ID tidak sesuai
@@ -95,31 +96,15 @@ class DocLogin : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (mAuth.currentUser != null) {
+            val intent = Intent(this, DocActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
 }
 
-//    override fun onStart() {
-//        super.onStart()
-//        if (mAuth.currentUser != null) {
-//            val currentUserUid = mAuth.currentUser?.uid
-//            mDbRef.child("user").child(currentUserUid!!)
-//                .addListenerForSingleValueEvent(object :
-//                    ValueEventListener {
-//                    override fun onDataChange(snapshot: DataSnapshot) {
-//                        val role = snapshot.child("role").getValue(String::class.java)
-//                        if (role!!.lowercase() == "dokter") {
-//                            val intent = Intent(this@Login, DocActivity::class.java)
-//                            startActivity(intent)
-//                        } else {
-//                            val intent = Intent(this@Login, MainActivity::class.java)
-//                            startActivity(intent)
-//                        }
-//                    }
-//
-//                    override fun onCancelled(error: DatabaseError) {
-//
-//                    }
-//                })
-//        }
-//    }
 
 

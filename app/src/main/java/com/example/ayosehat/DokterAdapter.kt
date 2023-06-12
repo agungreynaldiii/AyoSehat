@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.auth.FirebaseAuth
 import java.time.Instant
 
-class DokterAdapter(val context: Context, val userList: ArrayList<User>):
+class DokterAdapter(val context: Context, val userList: ArrayList<Dokter>):
     RecyclerView.Adapter<DokterAdapter.UserViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-        val view: View = LayoutInflater.from(context).inflate(R.layout.user_layout, parent, false)
+        val view: View = LayoutInflater.from(context).inflate(R.layout.doc_layout, parent, false)
         return UserViewHolder(view)
     }
 
@@ -24,6 +24,9 @@ class DokterAdapter(val context: Context, val userList: ArrayList<User>):
         val currentUser = userList[position]
 
         holder.textName.text = currentUser.name
+        holder.textSp.text = currentUser.spesialis
+        holder.textEx.text = currentUser.pengalaman
+        holder.textGrad.text = currentUser.lulusan
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context,ChatActivty::class.java)
@@ -41,5 +44,9 @@ class DokterAdapter(val context: Context, val userList: ArrayList<User>):
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textName = itemView.findViewById<TextView>(R.id.txt_name)
+        val textSp = itemView.findViewById<TextView>(R.id.txt_spesialis)
+        val textEx = itemView.findViewById<TextView>(R.id.txt_pengalaman)
+        val textGrad = itemView.findViewById<TextView>(R.id.txt_lulusan)
+
     }
 }

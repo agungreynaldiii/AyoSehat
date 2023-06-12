@@ -17,8 +17,8 @@ import com.google.firebase.database.ValueEventListener
 class MainActivity : AppCompatActivity() {
 
     private lateinit var userRecyclerView: RecyclerView
-    private lateinit var userList: ArrayList<User>
-    private lateinit var userListFinal: ArrayList<User>
+    private lateinit var userList: ArrayList<Dokter>
+    private lateinit var userListFinal: ArrayList<Dokter>
     private lateinit var adapter: DokterAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
@@ -26,6 +26,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        supportActionBar?.apply {
+            title = "List Dokter"
+        }
 
         mAuth = FirebaseAuth.getInstance()
         mDbRef = FirebaseDatabase.getInstance().reference
@@ -42,12 +46,13 @@ class MainActivity : AppCompatActivity() {
         mDbRef.child("dokter").addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear()
-                for(postSnapshot in snapshot.children){
-                    val currentUser = postSnapshot.getValue(User::class.java)
-                    if(mAuth.currentUser?.uid != currentUser?.uid){
-                        userList.add(currentUser!!)
+                for (postSnapshot in snapshot.children) {
+                    val currentDokter = postSnapshot.getValue(Dokter::class.java)
+                    if (mAuth.currentUser?.uid != currentDokter?.uid) {
+                        userList.add(currentDokter!!)
                     }
                 }
+
                 userListFinal.clear()
                 userListFinal.addAll(userList)
                 adapter.notifyDataSetChanged()

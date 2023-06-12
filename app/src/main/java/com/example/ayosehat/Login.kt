@@ -63,6 +63,7 @@ class Login : AppCompatActivity() {
                             if (snapshot.exists()) {
                                 // User exists in the "user" node
                                 val intent = Intent(this@Login, MainActivity::class.java)
+                                finish()
                                 startActivity(intent)
                             } else {
                                 // User does not exist in the "user" node
@@ -84,29 +85,12 @@ class Login : AppCompatActivity() {
         }
     }
 
-//    override fun onStart() {
-//        super.onStart()
-//        if (mAuth.currentUser != null) {
-//            val currentUserUid = mAuth.currentUser?.uid
-//            mDbRef.child("user").child(currentUserUid!!)
-//                .addListenerForSingleValueEvent(object :
-//                    ValueEventListener {
-//                    override fun onDataChange(snapshot: DataSnapshot) {
-//                        val role = snapshot.child("role").getValue(String::class.java)
-//                        if (role!!.lowercase() == "dokter") {
-//                            val intent = Intent(this@Login, DocActivity::class.java)
-//                            startActivity(intent)
-//                        } else {
-//                            val intent = Intent(this@Login, MainActivity::class.java)
-//                            startActivity(intent)
-//                        }
-//                    }
-//
-//                    override fun onCancelled(error: DatabaseError) {
-//
-//                    }
-//                })
-//        }
-//    }
+    override fun onStart() {
+        super.onStart()
+        if (mAuth.currentUser != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+    }
 }
 

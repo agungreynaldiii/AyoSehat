@@ -17,6 +17,9 @@ class DocSignUp : AppCompatActivity() {
     private lateinit var edtPassword: EditText
     private lateinit var edtName: EditText
     private lateinit var edtId: EditText
+    private lateinit var edtEx: EditText
+    private lateinit var edtSp: EditText
+    private lateinit var edtGrad: EditText
     private lateinit var btnSignUp: Button
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
@@ -34,6 +37,9 @@ class DocSignUp : AppCompatActivity() {
         edtName = findViewById(R.id.edt_name)
         btnSignUp = findViewById(R.id.btnSignUp)
         edtId = findViewById(R.id.idDoc)
+        edtEx = findViewById(R.id.exDoc)
+        edtSp = findViewById(R.id.spDoc)
+        edtGrad = findViewById(R.id.gradDoc)
 
 
         btnSignUp.setOnClickListener {
@@ -41,16 +47,19 @@ class DocSignUp : AppCompatActivity() {
             val password = edtPassword.text.toString()
             val name = edtName.text.toString()
             val id = edtId.text.toString()
+            val pengalaman = edtEx.text.toString()
+            val spesialis = edtSp.text.toString()
+            val lulusan = edtGrad.text.toString()
 
-            signUp(name, email, password, id)
+            signUp(name, email, password, id, pengalaman, spesialis, lulusan)
         }
     }
 
-    private fun signUp(name: String,email: String, password: String, id: String){
-        if (email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()  && id.isNotEmpty()) {
+    private fun signUp(name: String,email: String, password: String, id: String, pengalaman: String, spesialis: String, lulusan: String){
+        if (email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()  && id.isNotEmpty() && pengalaman.isNotEmpty() && spesialis.isNotEmpty() && lulusan.isNotEmpty()) {
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
-                    addUserToDatabase(name, email, mAuth.currentUser?.uid!!, id)
+                    addUserToDatabase(name, email, mAuth.currentUser?.uid!!, id, pengalaman, lulusan, spesialis)
                     val intent = Intent(this, DocLogin::class.java)
                     finish()
                     startActivity(intent)
@@ -64,9 +73,9 @@ class DocSignUp : AppCompatActivity() {
 
     }
 
-    private fun addUserToDatabase(name: String, email: String, uid: String, id: String){
+    private fun addUserToDatabase(name: String, email: String, uid: String, id: String, pengalaman: String, lulusan: String, spesialis: String){
         mDbRef = FirebaseDatabase.getInstance().reference
-        mDbRef.child("dokter").child(uid).setValue(Dokter(name, email, uid, id))
+        mDbRef.child("dokter").child(uid).setValue(Dokter(name, email, uid, id, pengalaman, lulusan, spesialis))
     }
 
 

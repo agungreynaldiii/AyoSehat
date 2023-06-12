@@ -13,6 +13,9 @@
         android:theme="@style/Theme.AyoSehat"
         tools:targetApi="31">
         <activity
+            android:name=".BackgroundActivity"
+            android:exported="false" />
+        <activity
             android:name=".DocSignUp"
             android:exported="true" />
         <activity

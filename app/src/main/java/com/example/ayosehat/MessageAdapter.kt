@@ -5,6 +5,7 @@ import android.provider.Telephony.Mms.Sent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -60,6 +61,5 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>):
     class ReceiveViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val receiveMessage = itemView.findViewById<TextView>(R.id.txt_receive_message)
     }
-
 
 }
